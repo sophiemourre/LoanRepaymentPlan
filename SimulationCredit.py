@@ -1,5 +1,5 @@
 prix_appartement = 154000
-frais_de_notaire = 13200 # TODO: Check amount - find exact one
+frais_de_notaire = 13200 # TODO:Check amount - find exact one
 travaux = 0
 cout_total_assurance = 0
 duree = 25
@@ -89,9 +89,12 @@ def calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances
 
 def pretty_print(i, capital_restant, montant, amortissement, interets, assurance):
     if i == 1:
-        print("ECHEANCE\t | CAPITAL_RESTANT_DU \t | MONTANT    \t | AMORTISSEMENT \t | INTERETS \t | ASSURANCE \t | MONTANT_AVEC_ASSURANCE")
+        print("ECHEANCE\t | CAPITAL_RESTANT_DU \t | MONTANT    \t | AMORTISSEMENT \t | INTERETS \t "\
+              "| ASSURANCE \t | MONTANT_AVEC_ASSURANCE")
  
-    print(f"{i:8d}\t |  {capital_restant:18.2f} \t | {montant:10.2f} \t | {amortissement:13.2f} \t | {interets:8.2f} \t | {assurance:9.2f} \t | {(montant + assurance):25.2f}")
+    print(f"{i:8d}\t |  {capital_restant:18.2f} \t | {montant:10.2f} \t | {amortissement:13.2f} \t "\
+          f"| {interets:8.2f} \t | {assurance:9.2f} \t | {(montant + assurance):25.2f}")
+
 
 if __name__ == "__main__":
 
