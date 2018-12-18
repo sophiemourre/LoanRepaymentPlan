@@ -46,9 +46,7 @@ def echeance_mensuelle(montant_initial, taux_annuel, duree_credit):
         @in duree_credit: la duree du credit en annees
     """
     taux_mensuel = annual2mensual_rate(taux_annuel)
-    echeance_mensuelle_credit = montant_initial * taux_mensuel / (1. - (1. + taux_mensuel)**(-duree_credit * 12))
-    
-    return echeance_mensuelle_credit
+    return montant_initial * taux_mensuel / (1. - (1. + taux_mensuel)**(-duree_credit * 12))
 
 def decoupage_echeance_hors_assurance(capital_restant, taux_annuel, duree_credit):
     """
@@ -59,7 +57,7 @@ def decoupage_echeance_hors_assurance(capital_restant, taux_annuel, duree_credit
     global cout_credit_global    
 
     interay_mensuel = capital_restant * annual2mensual_rate(taux_annuel)
-    mensualitay = echeance_mensuelle(capital_restant, taux_annuel, duree_credit)
+    mensualitay = echeance_mensuelle_credit
     amortissement = mensualitay - interay_mensuel
     capital_restant -= amortissement
     cout_credit_global += interay_mensuel
