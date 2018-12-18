@@ -116,12 +116,10 @@ if __name__ == "__main__":
     if frequence_echeances < 0:
         raise ValueError("Bien tenté mais non")
 
-    import pdb; pdb.set_trace()
     for i in range(1, duree_credit * int(12/frequence_echeances)):
         capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
         
         pretty_print(i, capital_restant, montant, amortissement, interets, assurance)
     
     # TODO: Rajouter la derniere echeance quelque part   
- 
     print(f"Cout total de l'assurance : {cout_total_assurance:.2f}, cout total du credit : {cout_credit_global:.2f}")
