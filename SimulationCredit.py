@@ -2,7 +2,6 @@ prix_appartement = 154000
 frais_de_notaire = 13200 # TODO:Check amount - find exact one
 travaux = 0
 cout_total_assurance = 0
-duree = 25
 echeance_mensuelle_credit = 0
 cout_credit_global = 0
 capital_restant = 0
@@ -32,7 +31,7 @@ def assurance_mensuelle(capital_restant, info_assurance = 0, assurance_degressiv
         @in info_assurance: si l'assurance est degressive, l'info assurance est necessairement un pourcentage. Sinon, une mensualite.
     """
     if assurance_degressive:
-        total_assurance = info_assurance * capital_restant
+        total_assurance = annual2mensual_rate(info_assurance) * capital_restant
     else:
         total_assurance = info_assurance
 
@@ -105,20 +104,21 @@ if __name__ == "__main__":
 
     duree_credit = 25
     assurance = 50*2
-    taux_annuel = 1.5/100
-    frequence_echeances = 12
-    assurance_degressive = True 
+    taux_annuel = 0.015
+    frequence_echeances = 1
+    assurance_degressive = True
     echeance_mensuelle_credit = echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
-    info_assurance = 0.35/100
+    info_assurance = 0.0035
     i = 0
 
     if frequence_echeances == 0:
-        raise("Attention, il faut au moins une échéance sur la durée du crédit.")
+        raise ZeroDivisionError("Attention, il faut au moins une échéance sur la durée du crédit.")
     if frequence_echeances > 12:
-        raise("NOT IMPLEMENTED")
+        raise NotImplementedError("NOT IMPLEMENTED")
     if frequence_echeances < 0:
-        raise("Bien tenté mais non")
+        raise ValueError("Bien tenté mais non")
 
+    import pdb; pdb.set_trace()
     for i in range(1, duree_credit * int(12/frequence_echeances)):
         capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
         
