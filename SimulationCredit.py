@@ -109,11 +109,17 @@ if __name__ == "__main__":
     frequence_echeances = 12
     assurance_degressive = True 
     echeance_mensuelle_credit = echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
-    info_assurance = 0.36/100
-    i = 0 
+    info_assurance = 0.35/100
+    i = 0
 
-    while capital_restant > echeance_mensuelle_credit:
-        i += 1
+    if frequence_echeances == 0:
+        raise("Attention, il faut au moins une échéance sur la durée du crédit.")
+    if frequence_echeances > 12:
+        raise("NOT IMPLEMENTED")
+    if frequence_echeances < 0:
+        raise("Bien tenté mais non")
+
+    for i in range(1, duree_credit * int(12/frequence_echeances)):
         capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
         
         pretty_print(i, capital_restant, montant, amortissement, interets, assurance)
