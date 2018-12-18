@@ -3,7 +3,7 @@ frais_de_notaire = 13200 # TODO:Check amount - find exact one
 travaux = 0
 cout_total_assurance = 0
 duree = 25
-echeance_mensuelle_var = 0
+echeance_mensuelle_credit = 0
 cout_credit_global = 0
 capital_restant = 0
 taux_annuel_range = [1.2, 1.9]
@@ -47,9 +47,9 @@ def echeance_mensuelle(montant_initial, taux_annuel, duree_credit):
         @in duree_credit: la duree du credit en annees
     """
     taux_mensuel = annual2mensual_rate(taux_annuel)
-    echeance_mensuelle_var = montant_initial * taux_mensuel / (1. - (1. + taux_mensuel)**(-duree_credit * 12))
+    echeance_mensuelle_credit = montant_initial * taux_mensuel / (1. - (1. + taux_mensuel)**(-duree_credit * 12))
     
-    return echeance_mensuelle_var
+    return echeance_mensuelle_credit
 
 def decoupage_echeance_hors_assurance(capital_restant, taux_annuel, duree_credit):
     """
@@ -108,11 +108,11 @@ if __name__ == "__main__":
     taux_annuel = 1.5/100
     frequence_echeances = 12
     assurance_degressive = True 
-    echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
+    echeance_mensuelle_credit = echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
     info_assurance = 0.36/100
     i = 0 
 
-    while capital_restant > echeance_mensuelle_var:
+    while capital_restant > echeance_mensuelle_credit:
         i += 1
         capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
         
