@@ -10,6 +10,8 @@ travaux_inclus = False
 apport_inclus = False
 cent_dix_pourcent = False
 
+loan_structure = {}
+
 def montant_credit():
     global capital_restant
 
@@ -57,7 +59,11 @@ def decoupage_echeance_hors_assurance(capital_restant, taux_annuel, duree_credit
     global cout_credit_global    
 
     interay_mensuel = capital_restant * annual2mensual_rate(taux_annuel)
-    mensualitay = echeance_mensuelle_credit
+    
+    if capital_restant >= echeance_mensuelle_credit:
+        mensualitay = echeance_mensuelle_credit
+    else:
+        mensualitay = capital_restant + interay_mensuel
     amortissement = mensualitay - interay_mensuel
     capital_restant -= amortissement
     cout_credit_global += interay_mensuel
@@ -81,6 +87,7 @@ def calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances
         interets += interay_mensuel
 
     cout_total_assurance += assurance
+
 
     return capital_restant, montant, amortissement, interets, assurance, cout_total_assurance
 
@@ -116,10 +123,9 @@ if __name__ == "__main__":
     if frequence_echeances < 0:
         raise ValueError("Bien tenté mais non")
 
-    for i in range(1, duree_credit * int(12/frequence_echeances)):
+    for i in range(1, duree_credit * int(12/frequence_echeances) +1):
         capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
         
         pretty_print(i, capital_restant, montant, amortissement, interets, assurance)
     
-    # TODO: Rajouter la derniere echeance quelque part   
     print(f"Cout total de l'assurance : {cout_total_assurance:.2f}, cout total du credit : {cout_credit_global:.2f}")
