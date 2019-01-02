@@ -1,3 +1,5 @@
+import numpy as np
+
 prix_appartement = 154000
 frais_de_notaire = 13200 # TODO:Check amount - find exact one
 travaux = 0
@@ -5,7 +7,7 @@ cout_total_assurance = 0
 echeance_mensuelle_credit = 0
 cout_credit_global = 0
 capital_restant = 0
-taux_annuel_range = [1.2, 1.9]
+taux_annuel_range = [0.012, 0.019]
 travaux_inclus = False
 apport_inclus = False
 cent_dix_pourcent = False
@@ -112,8 +114,8 @@ if __name__ == "__main__":
     taux_annuel = 0.015
     frequence_echeances = 1
     assurance_degressive = True
-    echeance_mensuelle_credit = echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
     info_assurance = 0.0035
+    tableau_amortissement = False
     i = 0
 
     if frequence_echeances == 0:
@@ -123,9 +125,16 @@ if __name__ == "__main__":
     if frequence_echeances < 0:
         raise ValueError("Bien tenté mais non")
 
-    for i in range(1, duree_credit * int(12/frequence_echeances) +1):
-        capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
+    taux_testes = np.arange(start=taux_annuel_range[0], stop=taux_annuel_range[1], step=0.0005)
+
+    for taux_annuel in taux_testes:
+        echeance_mensuelle_credit = echeance_mensuelle(montant_credit(), taux_annuel, duree_credit)
+        print(f"Taux d'intérêt testé : {taux_annuel*100:.2f}%")
         
-        pretty_print(i, capital_restant, montant, amortissement, interets, assurance)
-    
-    print(f"Cout total de l'assurance : {cout_total_assurance:.2f}, cout total du credit : {cout_credit_global:.2f}")
+        for i in range(1, duree_credit * int(12/frequence_echeances) +1):
+            capital_restant, montant, amortissement, interets, assurance, cout_total_assurance = calcul_multiples_echeances(capital_restant, taux_annuel, frequence_echeances, info_assurance, assurance_degressive, duree_credit)
+        
+        if tableau_amortissement:
+                pretty_print(i, capital_restant, montant, amortissement, interets, assurance)
+        
+        print(f"Cout total de l'assurance : {cout_total_assurance:.2f}, cout total du credit : {cout_credit_global:.2f}, montant de l'echeance : {echeance_mensuelle_credit:.2f}")
